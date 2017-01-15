@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "C:/Python36/python.exe",
+    "python.autoComplete.extraPaths": [
+        "C:/Python36/Lib/site-packages/site-packages"
+    ]
+}
