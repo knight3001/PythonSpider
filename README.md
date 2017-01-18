@@ -20,3 +20,6 @@ https://www.mongodb.com/products/lp/compass?jmp=search&utm_source=google&utm_cam
 #tip
 1.disable Pylint invalid constant name check message
   # pylint: disable=C0103
+
+MongoDB Data Export
+   mongoexport --host=localhost:27017 --db=PythonSpider --collection=Movies --out test.json 
