@@ -42,12 +42,16 @@ def parse_html(html, movies):
         star = detail.find('div', attrs={'class':'bd'}).find('div', attrs={'class':'star'}) \
                      .find('span', attrs={'class':'rating_num'}).get_text()
         quote_div = detail.find('div', attrs={'class':'bd'}).find('p', attrs={'class':'quote'})
+        quote = ""
         if quote_div:
             quote = quote_div.find('span', attrs={'class':'inq'}).get_text()
+        link = bt_login(movie_name)
+
         movie = {"name":movie_name,
                  "pic":pic,
                  "star":star,
                  "quote":quote,
+                 "link":link,
                  "date":datetime.datetime.utcnow()}
         movie_id = movies.insert_one(movie).inserted_id
         #movie_name_list.append(movie_name)
@@ -58,7 +62,60 @@ def parse_html(html, movies):
 
     return None
 
+def bt_login(moviename):
+    links = []
+
+    s = requests.session()
+    headers = {
+        "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 ' \
+                      '(KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36',
+        'Host': 'www.bttt99.com',
+    }
+    data = {
+        'show': 'title,ftitle,type,area,time,director,player,actor,imdb',
+        'tbname': 'movie',
+        'tempid': '1',
+        'keyboard': moviename
+    }
+    resp = s.post('http://www.bttt99.com/e/search/', headers=headers, data=data)
+    soup = BeautifulSoup(resp.text, "html.parser")
+
+    try:
+        linkFull = soup.find('div', attrs={'class':'item cl'}). \
+               find('p', attrs={'class':'tt cl'}).find('a')['href']
+        linkFirst = linkFull.split("http://www.bttt99.com/v/")
+        if len(linkFirst) > 1:
+            linkId = linkFirst[1].split("/")[0]
+        else:
+            linkId = linkFull.split("/v/")[1].split("/")[0]
+        if linkId:
+            headers['Referer'] = 'http://www.bttt99.com/v/' + str(linkId) + '/'
+            link_resp = s.get('http://www.bttt99.com/e/show.php?classid=1&id=' \
+                        + linkId, headers=headers)
+            link_soup = BeautifulSoup(link_resp.text, "html.parser")
+            magnet_links = link_soup.find_all('li')
+
+            for magnet in magnet_links:
+                lk = magnet.find('a')
+                if lk:
+                    title = magnet.find('a')['title'].replace(moviename, "").strip()
+                    href = magnet.find('a')['href']
+                    links.append({"title":title, "href":href})
+    except AttributeError as e:
+        print(moviename + "<br>" + str(e))
+    except IndexError as e:
+        print(moviename + "<br>" + str(e))
+    return links
+
 def main():
+    """
+    movies = startDB()
+    for movie in movies.find():
+        movie_name = movie['name']
+        links = bt_login(movie_name)
+        movie['link'] = links
+        movies.save(movie)
+    """
     url = DOWNLOAD_URL
     movies = startDB()
     #with codecs.open('movies.txt', 'wb', encoding='utf-8') as fp:
@@ -66,13 +123,7 @@ def main():
         html = download_page(url)
         url = parse_html(html, movies)
         #fp.write(u'{movies}\n'.format(movies='\n'.join(movies)))
-    """
-    movies = startDB()
-    for post in movies.find():
-        print(post["pic"])
-    """
-
-
+    print("done")
 
 if __name__ == '__main__':
     main()
