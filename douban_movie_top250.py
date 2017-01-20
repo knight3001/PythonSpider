@@ -102,9 +102,9 @@ def bt_login(moviename):
                     href = magnet.find('a')['href']
                     links.append({"title":title, "href":href})
     except AttributeError as e:
-        print(moviename + "<br>" + str(e))
+        print(moviename + " " + str(e))
     except IndexError as e:
-        print(moviename + "<br>" + str(e))
+        print(moviename + " " + str(e))
     return links
 
 def main():
