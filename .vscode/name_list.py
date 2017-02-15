@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 
 def main():
     ls = ""
-    url = "http://www.babynamewizard.com/name-list/australian-boys-names-most-popular-names-for-boys-in-australia-new-south-wales"
+    #url = "http://www.babynamewizard.com/name-list/australian-boys-names-most-popular-names-for-boys-in-australia-new-south-wales"
+    url = "http://www.babynamewizard.com/name-list/australian-girls-names-most-popular-names-for-girls-in-australia-new-south-wales"
     html = requests.get(url).content
     soup = BeautifulSoup(html, "html.parser")
     list_soup = soup.find('ol', attrs={'class':'no-icon'})
