@@ -6,6 +6,8 @@ Install Packages:
 1. requests
 2. beautifulsoup4
 3. pymongo
+4. autopep8
+5. numpy
 
 configure a Windows Service for MongoDB Community Edition
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#run-mongodb-community-edition
