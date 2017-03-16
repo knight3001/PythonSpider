@@ -8,6 +8,7 @@ Install Packages:
 3. pymongo
 4. autopep8
 5. numpy
+6. pip3 install you-get(download FFmpeg first!)
 
 configure a Windows Service for MongoDB Community Edition
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#run-mongodb-community-edition
@@ -25,3 +26,6 @@ https://www.mongodb.com/products/lp/compass?jmp=search&utm_source=google&utm_cam
 
 MongoDB Data Export
    mongoexport --host=localhost:27017 --db=PythonSpider --collection=Movies --out test.json 
+
+How to install FFmpeg?
+http://zh.wikihow.com/%E5%9C%A8Windows%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg%E7%A8%8B%E5%BA%8F   
