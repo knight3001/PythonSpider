@@ -9,6 +9,7 @@ Install Packages:
 4. autopep8
 5. numpy
 6. pip3 install you-get(download FFmpeg first!)
+7. pip3 install wxpy(will install itchat as well)
 
 configure a Windows Service for MongoDB Community Edition
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#run-mongodb-community-edition
