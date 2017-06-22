@@ -10,6 +10,7 @@ Installed Packages:
 5. numpy
 6. pip3 install you-get(download FFmpeg first!)
 7. pip3 install wxpy(will install itchat as well)
+8. pip install apscheduler
 
 Installed VS CODE Extensions:
 1. Python
