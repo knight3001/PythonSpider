@@ -17,7 +17,7 @@ BASE_URL = 'http://www.boc.cn/sourcedb/whpj/'
 THRESH = 515
 
 
-def send_email():
+def send_email(result):
     """
     send email notification
     """
@@ -31,7 +31,7 @@ def send_email():
         "To: terry@bneing.com",
         "Subject: Currency Warning",
         "",
-        "AUD Currency Drop below " + str(float(THRESH) / 10)
+        "AUD Currency Drop below " + str(float(THRESH) / 10) + " to " + str(result)
     ])
     server.sendmail("knight3001@gmail.com", "terry@bneing.com", msg)
     print("Email sent")
@@ -48,9 +48,9 @@ def main():
         .find_next_sibling("td").find_next_sibling("td").text
 
     if float(result) < float(THRESH):
-        send_email()
+        send_email(result)
     else:
-        print("Not Dropped")
+        print("Not Dropped: " + str(result))
 
 SCHEDULER = BlockingScheduler()
 SCHEDULER.add_job(main, 'interval', hours=1)
