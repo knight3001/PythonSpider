@@ -11,6 +11,7 @@ Installed Packages:
 6. pip3 install you-get(download FFmpeg first!)
 7. pip3 install wxpy(will install itchat as well)
 8. pip install apscheduler
+9. pip install virtualenv
 
 Installed VS CODE Extensions:
 1. Python
@@ -35,3 +36,8 @@ MongoDB Data Export
 
 How to install FFmpeg?
 http://zh.wikihow.com/%E5%9C%A8Windows%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg%E7%A8%8B%E5%BA%8F   
+
+
+#flask
+set FLASK_APP=**.py
+set FLASK_DEBUG=1
