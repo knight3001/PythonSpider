@@ -13,6 +13,7 @@ Installed Packages:
 8. pip install apscheduler
 9. pip install virtualenv
 10. pip install pytest
+11. pip install raven 
 
 Installed VS CODE Extensions:
 1. Python

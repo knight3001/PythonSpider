@@ -84,3 +84,9 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
+
+@app.context_processor
+def utility_processor():
+    def format_price(amount, currency=u'€'):
+        return u'{0:.2f}{1}'.format(amount, currency)
+    return dict(format_price=format_price)
