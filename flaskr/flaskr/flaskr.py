@@ -1,7 +1,10 @@
 import os
 import sqlite3
+import click
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+     render_template, flash, template_rendered, current_app
+from flask.views import View
+from contextlib import contextmanager
 
 app = Flask(__name__) # create the application instance :)
 app.config.from_object(__name__) # load config from this file , flaskr.py
@@ -90,3 +93,61 @@ def utility_processor():
     def format_price(amount, currency=u'€'):
         return u'{0:.2f}{1}'.format(amount, currency)
     return dict(format_price=format_price)
+
+@contextmanager
+def captured_templates(app):
+    recorded = []
+    def record(sender, template, context, **extra):
+        recorded.append((template, context))
+    template_rendered.connect(record, app)
+    try:
+        yield recorded
+    finally:
+        template_rendered.disconnect(record, app)
+
+with captured_templates(app) as templates:
+    rv = app.test_client().get('/')
+    assert rv.status_code == 200
+    assert len(templates) == 1
+    template, context = templates[0]
+    assert template.name == 'show_entries.html'
+    #assert len(context['items']) == 10
+
+
+class ListView(View):
+
+    def get_template_name(self):
+        raise NotImplementedError()
+
+    def render_template(self, context):
+        return render_template(self.get_template_name(), **context)
+
+    def get_objects(self):
+        raise NotImplementedError()
+
+    def dispatch_request(self):
+        context = {'objects': self.get_objects()}
+        return self.render_template(context)
+
+class UserView(ListView):
+
+    def get_template_name(self):
+        return 'show_entries.html'
+
+    def get_objects(self):
+        db = get_db()
+        cur = db.execute('select title, text from entries order by id desc')
+        entries = cur.fetchall()
+        return entries
+
+app.add_url_rule('/list/', view_func=UserView.as_view('entries'))
+
+with app.app_context():
+    # within this block, current_app points to app.
+    print(current_app)
+
+
+@app.cli.command('test')
+def test_click():
+    """Initialize the database."""
+    click.echo('Init the db')

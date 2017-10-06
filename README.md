@@ -12,8 +12,6 @@ Installed Packages:
 7. pip3 install wxpy(will install itchat as well)
 8. pip install apscheduler
 9. pip install virtualenv
-10. pip install pytest
-11. pip install raven 
 
 Installed VS CODE Extensions:
 1. Python
